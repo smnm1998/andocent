@@ -1,26 +1,133 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+    HTML 기본 요소들 스타일 정의
+    - 전역적으로 적용, 거진 다 사용
+    - 브라우저 기본 스타일을 오버라이드해서 일관성 향상
+*/
+@layer base {
+    html {
+        font-family: "Noto Sans KR", system-ui, sans-serif;
+        scroll-behavior: smooth; // 앵커 클릭 시 부드럽게 스크롤 됨
+    }
+
+    body {
+        @apply bg-gray-50 text-gray-900;
+        font-feature-settings: "kern" 1; // 문자 간격 최적화 -> 가독성 향상
+        text-rendering: optimizeSpeed; // 브라우저 텍스트 렌더링 최적화
+    }
+
+    /* 커스텀 스크롤바 */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    /* 스크롤바 배경 */
+    ::-webkit-scrollbar-track {
+        @apply bg-gray-100;
+    }
+
+    /* 스크롤바 thumb */
+    ::-webkit-scrollbar-thumb {
+        @apply bg-gray-300 rounded-full; // 모서리 둥글게
+    }
+
+    /* 스크롤바 thumb-hover */
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-400;
+    }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/*
+    사용자 정의 유틸리티 클래스 모음
+    - 컴포넌트에서 자주 사용하는 스타일 패턴 유틸리티로 적용
+    - CSS Modules 함께 사용해서 코드 중복 방지
+*/
+@layer utilities {
+    /* 안동 테마 전용 텍스트 색상 유틸리티 */
+    .text-andong-primary {
+        @apply text-andong-traditional; // #8B4513;
+    }
+
+    .text-andong-secondary {
+        @apply text-andong-heritage; // #2F4F4F;
+    }
+
+    /* 안동 테마 그라데이션 배경 유틸리티 */
+    .bg-andong-gradient {
+        background: linear-gradient(
+            135deg,
+            theme("colors.andong.traditional"),
+            theme("colors.andong.heritage")
+        );
+    }
+
+    .bg-andong-food-gradiant {
+        background: linear-gradient(
+            135deg,
+            theme("colors.andong.food"),
+            theme("colors.andong.traditional")
+        );
+    }
+
+    /* 안동 테마 전용 그림자 유틸리티 */
+    .shadow-andong {
+        box-shadow: 0 4px 6px -1px rgba(139, 69, 19, 0.1),
+            0 2px 4px -1px rgba(139, 69, 19, 0.06);
+    }
+
+    .shadow-andong-lg {
+        box-shadow: 0 10px 15px -3px rgba(139, 69, 19, 0.1),
+            0 4px 6px -2px rgba(139, 69, 19, 0.05);
+    }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/*
+    fadeInUp 애니메이션
+    - 사용: 페이지 로드시 컨텐츠가 부드럽게 나타날 때
+    - 효과: 투명도 0->1 / 아래쪽 30px에서 원래 위치로 이동
+*/
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/*
+    slideInRight 애니메이션
+    - 사용: 사이드바나 메뉴가 나타날 때
+    - 효과 투명도 0->1, 오른쪽 30px에서 원래 위치로 이동
+*/
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/*
+    bounceGentle 애니메이션
+    - 사용: 버튼, 아이콘에 사용
+    - 효과: 위-아래로 8px씩 부드럽게 움직임
+*/
+@keyframes bounceGentle {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
 }
